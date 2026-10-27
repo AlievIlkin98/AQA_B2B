@@ -1,5 +1,7 @@
 from playwright.sync_api import Locator, Page, expect
 from  components.offers.markup_model import MarkupModel
+from components.offers.offer_row import OfferRow
+
 
 class OffersPage:
     def __init__(self, page: Page, base_url: str):
@@ -13,7 +15,7 @@ class OffersPage:
     def search_input(self) -> Locator:
         return self.page.get_by_test_id("header-search-input")
 
-    # строки предложений по искомой детали
+    # Строка предложения
     @property
     def exact_offers(self) -> Locator:
         return self.page.get_by_test_id("exact-offer-row")
@@ -32,8 +34,11 @@ class OffersPage:
         self.search_input.press("Enter")
         expect(self.exact_offers.first).to_be_visible()
 
-    def add_first_to_cart(self) -> None:
+    # Кнопка добавления в корзину
+    def add_offer_to_cart(self) -> None:
         self.exact_offers.first.get_by_test_id("exact-offer-add-to-cart").click()
+        expect(self.added_notice).to_be_visible()
+
 
     #TODO: после доработки MarkupModel исправить
     def open_markup(self) -> MarkupModel:
@@ -41,3 +46,25 @@ class OffersPage:
         self.markup.markup_button.click()
         expect(self.markup.root).to_be_visible()
         return self.markup
+
+    # Атрибут получения цены первого оффера
+    def get_offer_price(self):
+        return self.exact_offers.first.get_by_test_id("exact-offer-price")
+
+    def get_offer_stock(self):
+        return self.exact_offers.first.get_by_test_id("exact-offer-stock")
+
+    # Раскрытие списка аналогов "Показать еще"
+    def exact_product_show_all(self):
+        self.page.get_by_test_id("exact-product-show-all").inner_text()
+
+    def check_exact_product_show_all_is_visible(self):
+        expect(self.exact_product_show_all).to_be_visible()
+
+
+    def first_offer(self) -> OfferRow:
+        return OfferRow(self.exact_offers.first)
+
+
+
+

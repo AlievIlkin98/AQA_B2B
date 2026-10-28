@@ -9,7 +9,7 @@ class OfferRow:
         return self.root.get_by_test_id("exact-offer-add-to-cart")
 
     @property
-    def increase_(self) -> Locator:
+    def increase_button(self) -> Locator:
         return self.root.get_by_test_id("product-qty-plus")
 
     @property
@@ -18,8 +18,21 @@ class OfferRow:
 
     @property
     def price(self) -> Locator:
-        return self.root.get_by_test_id('exact-offer-price')
+        return self.root.get_by_test_id("exact-offer-price")
+
+    @property
+    def quantity_input(self) -> Locator:
+        return self.root.get_by_test_id("product-qty-input")
 
     @property
     def delivery(self) -> Locator:
-        return self.root.get_by_test_id('exact-offer-delivery')
+        return self.root.get_by_test_id("exact-offer-delivery")
+
+    def add_to_cart(self) -> None:
+        self.add_to_cart_button.click()
+
+    def increase(self) -> None:
+        self.increase_button.click()
+
+    def decrease(self) -> None:
+        self.decrease_button.click()

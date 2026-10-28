@@ -1,42 +1,69 @@
-from playwright.sync_api import Page, Locator
+from playwright.sync_api import Locator, Page, expect
 
 
 class MarkupModel:
     def __init__(self, page: Page):
         self.page = page
 
-    # TODO: заменить на data-testid по готовности
-    # кнопка для открытия наценки
     @property
-    def markup_button(self) -> Locator:
-        # stub: get_by_test_id("markup-open")
-        return self.page.get_by_text("Цена, ₽")
+    def root(self) -> Locator:
+        # stub: get_by_test_id("markup-modal")
+        return self.page.get_by_test_id("markup-settings-modal")
 
-    #TODO: заменить на data-testid по готовности
     @property
-    def root(self):
-        return self.page.get_by_text('Настройка наценки')
+    def simple_tab(self) -> Locator:
+        return self.root.get_by_test_id("markup-type-simple")
 
-    #TODO: заменить на data-testid по готовности
     @property
-    def simple_tab(self):
-        return self.root.get_by_title('Простая')
+    def complex_tab(self) -> Locator:
+        return self.root.get_by_test_id("markup-type-complex")
 
-    # TODO: заменить на data-testid по готовности
     @property
-    def complex_tab(self):
-        return self.root.get_by_title('Сложная')
+    def percent_radio(self) -> Locator:
+        return self.root.get_by_role("radio", name="Процент")
 
-    # TODO: заменить на data-testid по готовности
+    @property
+    def sum_radio(self) -> Locator:
+        return self.root.get_by_role("radio", name="Сумма")
+
+    @property
+    def simple_value_input(self) -> Locator:
+        return self.root.get_by_test_id("markup-value-input")
+
     @property
     def apply_button(self) -> Locator:
-        # stub: get_by_test_id("markup-apply")
-        return self.root.get_by_role("button", name="Применить")
+        return self.root.get_by_test_id("markup-apply-button")
 
-    # TODO: заменить на data-testid по готовности
     @property
     def reset_button(self) -> Locator:
-        # stub: get_by_test_id("markup-reset")
-        return self.root.get_by_role("button", name="Сбросить")
+        return self.root.get_by_test_id("markup-reset-button")
 
+    @property
+    def close_button(self) -> Locator:
+        return self.root.get_by_test_id("markup-modal-close")
 
+    def should_be_open(self) -> None:
+        expect(self.root).to_be_visible()
+
+    def open_simple(self) -> None:
+        self.simple_tab.click()
+
+    def open_complex(self) -> None:
+        self.complex_tab.click()
+
+    def set_percent(self, value: str) -> None:
+        self.percent_radio.click()
+        self.simple_value_input.fill(value)
+
+    def set_sum(self, value: str) -> None:
+        self.sum_radio.click()
+        self.simple_value_input.fill(value)
+
+    def apply(self) -> None:
+        self.apply_button.click()
+
+    def reset(self) -> None:
+        self.reset_button.click()
+
+    def close(self) -> None:
+        self.close_button.click()

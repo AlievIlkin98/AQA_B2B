@@ -1,5 +1,5 @@
 import os
-
+from pages.offers_page import OffersPage
 import pytest
 from playwright.sync_api import Browser, Page, expect
 

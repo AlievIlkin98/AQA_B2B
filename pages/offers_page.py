@@ -9,6 +9,7 @@ class OffersPage:
         self.base_url = base_url.rstrip("/")
         self.markup = MarkupModel(page)
 
+
     @property
     def search_input(self) -> Locator:
         return self.page.get_by_test_id("header-search-input")
@@ -21,10 +22,26 @@ class OffersPage:
     def added_notice(self) -> Locator:
         return self.page.get_by_text("добавлена в корзину")
 
+    @property
+    def copied_notice(self) -> Locator:
+        return self.page.get_by_text("Артикул скопирован")
+
     #Data-test-id расположен в 2-х местах, фронту необходимо исправить
     @property
     def markup_button(self) -> Locator:
         return self.page.get_by_test_id("price-settings-button")
+
+    @property
+    def search_clear_button(self) -> Locator:
+        return self.page.get_by_test_id("header-search-clear")
+
+    @property
+    def copy_button(self):
+        return self.page.get_by_test_id("exact-product-copy-sku")
+
+    @property
+    def cheaper_sort_tub(self):
+        return self.page.get_by_test_id("price-sort-cheaper")
 
     def open(self) -> None:
         self.page.goto(self.base_url, wait_until="domcontentloaded")
@@ -42,6 +59,25 @@ class OffersPage:
         self.markup_button.click()
         expect(self.markup.root).to_be_visible()
         return self.markup
+
+    def search_clear(self) -> None:
+        self.search_clear_button.click()
+
+    def copy(self) -> None:
+        self.copy_button.click()
+
+    def sort_by_cheapest(self) -> None:
+        self.cheaper_sort_tub.click()
+
+    # Сбор цен по группам
+    def prices_by_group(self) -> dict[str, list[float]]:
+        groups: dict[str, list[float]] = {}
+        for i in range(self.exact_offers.count()):
+            row = self.offer(i)
+            group = row.availability_value()
+            groups.setdefault(group, []).append(row.price_value())
+        return groups
+
 
 
 

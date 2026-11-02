@@ -28,6 +28,26 @@ class OfferRow:
     def delivery(self) -> Locator:
         return self.root.get_by_test_id("exact-offer-delivery")
 
+    @property
+    def returnable(self):
+        return self.root.get_by_test_id("exact-offer-return")
+
+    @property
+    def stock(self):
+        return self.root.get_by_test_id("exact-offer-stock")
+
+    @property
+    def lot(self):
+        return self.root.get_by_test_id("exact-offer-lot")
+
+    @property
+    def availability(self) -> Locator:
+        return self.root.get_by_test_id("exact-offer-availability")
+
+    def availability_value(self) -> str:
+        return self.availability.inner_text().strip()
+
+
     def add_to_cart(self) -> None:
         self.add_to_cart_button.click()
 

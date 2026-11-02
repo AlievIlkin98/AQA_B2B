@@ -15,6 +15,10 @@ class OffersPage:
         return self.page.get_by_test_id("header-search-input")
 
     @property
+    def in_stock_checkbox(self) -> Locator:
+        return self.page.get_by_test_id("price-filter-in-stock")
+
+    @property
     def exact_offers(self) -> Locator:
         return self.page.get_by_test_id("exact-offer-row")
 
@@ -43,6 +47,10 @@ class OffersPage:
     def cheaper_sort_tub(self):
         return self.page.get_by_test_id("price-sort-cheaper")
 
+    @property
+    def faster_sort_tub(self):
+        return self.page.get_by_test_id("price-sort-faster")
+
     def open(self) -> None:
         self.page.goto(self.base_url, wait_until="domcontentloaded")
         expect(self.search_input).to_be_visible()
@@ -69,6 +77,10 @@ class OffersPage:
     def sort_by_cheapest(self) -> None:
         self.cheaper_sort_tub.click()
 
+    # Сортировка по табу "Быстрее"
+    def sort_by_fastest(self) -> None:
+        self.faster_sort_tub.click()
+
     # Сбор цен по группам
     def prices_by_group(self) -> dict[str, list[float]]:
         groups: dict[str, list[float]] = {}
@@ -77,6 +89,12 @@ class OffersPage:
             group = row.availability_value()
             groups.setdefault(group, []).append(row.price_value())
         return groups
+
+    def filter_by_stock(self) -> None:
+        self.in_stock_checkbox.click()
+
+    def filter_by_faster(self) -> None:
+        self.in_stock_checkbox.click()
 
 
 

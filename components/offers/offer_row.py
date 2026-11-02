@@ -4,6 +4,10 @@ class OfferRow:
     def __init__(self, root: Locator):
         self.root = root
 
+    """
+    Локаторы
+    """
+
     @property
     def add_to_cart_button(self) -> Locator:
         return self.root.get_by_test_id("exact-offer-add-to-cart")
@@ -44,10 +48,9 @@ class OfferRow:
     def availability(self) -> Locator:
         return self.root.get_by_test_id("exact-offer-availability")
 
-    def availability_value(self) -> str:
-        return self.availability.inner_text().strip()
-
-
+    """
+    Методы
+    """
     def add_to_cart(self) -> None:
         self.add_to_cart_button.click()
 
@@ -56,3 +59,23 @@ class OfferRow:
 
     def decrease(self) -> None:
         self.decrease_button.click()
+
+
+
+    """
+       Значения атрибутов
+    """
+
+    def price_value(self) -> float:
+        text = self.price.inner_text().replace(" ", "").replace(",", ".")
+        return float(text)
+
+
+    def availability_value(self) -> str:
+        return self.availability.inner_text().strip()
+
+    def delivery_value(self) -> str:
+        return self.delivery.inner_text().strip()
+
+    def return_value(self) -> str:
+        return self.returnable.inner_text().strip()

@@ -19,6 +19,10 @@ class OffersPage:
         return self.page.get_by_test_id("price-filter-in-stock")
 
     @property
+    def returnable_checkbox(self) -> Locator:
+        return self.page.get_by_test_id("price-filter-returnable")
+
+    @property
     def exact_offers(self) -> Locator:
         return self.page.get_by_test_id("exact-offer-row")
 
@@ -96,7 +100,8 @@ class OffersPage:
     def filter_by_faster(self) -> None:
         self.in_stock_checkbox.click()
 
-
+    def filter_by_returnable(self) -> None:
+        self.returnable_checkbox.click()
 
 
 

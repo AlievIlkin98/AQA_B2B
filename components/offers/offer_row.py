@@ -70,12 +70,6 @@ class OfferRow:
         text = self.price.inner_text().replace(" ", "").replace(",", ".")
         return float(text)
 
-
-    def availability_value(self) -> str:
-        return self.availability.inner_text().strip()
-
     def delivery_value(self) -> str:
         return self.delivery.inner_text().strip()
 
-    def return_value(self) -> str:
-        return self.returnable.inner_text().strip()
